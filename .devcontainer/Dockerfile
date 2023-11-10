@@ -21,7 +21,30 @@ ENV PATH=$PATH:/home/vscode/.dapr/bin
 
 ENV DOCKER_BUILDKIT=1
 
-COPY scripts/*.sh /tmp/scripts/
+COPY scripts/* /tmp/scripts/
 RUN find /tmp/scripts/ -type f -iname "*.sh" -exec chmod +x {} \;
 RUN /bin/bash /tmp/scripts/container-set.sh
 RUN /bin/bash /tmp/scripts/configure-proxies.sh
+
+
+# install Lingua Franca
+# 不要の可能性あり
+#RUN apt-get update && apt-get install -yq \
+#    sudo \
+#    openjdk-17-jdk \
+#    npm \
+#    lsb-core
+RUN sdk default java 17.0.9.fx-zulu
+
+#COPY scripts/setup-lf.bash /tmp/scripts/
+
+RUN bash /tmp/scripts/setup-lf.bash nightly
+ENV PATH="$PATH:/lingua-franca/bin"
+
+# To install RTI at /usr/local/bin/RTI
+RUN git clone --depth=1 https://github.com/lf-lang/reactor-c.git && \
+cd reactor-c/core/federated/RTI/ && \
+mkdir build && cd build && \
+cmake ../ && \
+make && \
+sudo make install

@@ -75,6 +75,7 @@
 			},
 			// Add the IDs of extensions you want installed when the container is created.
 			"extensions": [
+				"lf-lang.vscode-lingua-franca",
 				"dbaeumer.vscode-eslint",
 				"ms-azuretools.vscode-dapr",
 				"ms-azuretools.vscode-docker",
