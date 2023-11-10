@@ -92,8 +92,16 @@
 			]
 		}
 	},
-	"onCreateCommand": "bash .devcontainer/scripts/onCreateCommand.sh",
-	"postStartCommand": "bash .devcontainer/scripts/postStartCommand.sh",
+	"onCreateCommand": {
+		"velocitas": "bash .devcontainer/scripts/onCreateCommand.sh",
+		"LinguaFranca": "sudo mkdir -p /workspaces/.codespaces/.persistedshare/logs && sudo chmod -R 777 /workspaces/.codespaces/.persistedshare/logs"
+	},
+	"postStartCommand": {
+		"velocitas": "bash .devcontainer/scripts/postStartCommand.sh",
+		"setup-user-env": ["/bin/bash", "-c", "(bash -i ./.devcontainer/scripts/setup-user-env.bash >> /workspaces/.codespaces/.persistedshare/logs/stdout-env.log 2>> /workspaces/.codespaces/.persistedshare/logs/stderr-env.log) || (echo setup-user-env exited with nonzero code)"],
+		"setup-lf": ["/bin/bash", "-c", "(bash ./devcontainer/scripts/setup-lf.bash nightly >> /workspaces/.codespaces/.persistedshare/logs/stdout-lf.log 2>> /workspaces/.codespaces/.persistedshare/logs/stderr-lf.log) || (echo setup-lf exited with nonzero code)"],
+		"gitignore": "echo 'lingua-franca/**' >> .gitignore"
+	}
 	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
 	"remoteUser": "vscode"
 }
